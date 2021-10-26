@@ -1,4 +1,4 @@
-import 'package:appbar_custom/youtube.dart';
+import 'package:appbar_custom/view/youtube.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -36,7 +36,10 @@ class BottomNavigationItems extends HookWidget {
     return BottomNavigationBar(
       showSelectedLabels: true,
       showUnselectedLabels: true,
+      selectedFontSize: 10,
+      unselectedFontSize: 10,
       selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
@@ -73,7 +76,9 @@ class BottomNavigationItems extends HookWidget {
       ],
       currentIndex: _index.state,
       onTap: (selectIndex) async {
-        _index.state = selectIndex;
+        if (selectIndex != 2) {
+          _index.state = selectIndex;
+        }
       },
     );
   }
