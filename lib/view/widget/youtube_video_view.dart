@@ -1,9 +1,12 @@
+import 'package:appbar_custom/item/youtube_video.dart';
 import 'package:appbar_custom/localize/ja_timeago.dart';
 import 'package:appbar_custom/view/widget/user_images.dart';
 import 'package:appbar_custom/view/youtube.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class YouTubeVideoView extends StatelessWidget {
@@ -13,34 +16,41 @@ class YouTubeVideoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                color: Colors.white,
-              ),
-              const FlutterLogo(
-                size: 50,
-              ),
-            ],
-          ),
-        ),
-        Row(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: UserImages(
-                path: 'assets/user/avatar.jpg',
-              ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 400),
+      child: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  color: Colors.white,
+                ),
+                const FlutterLogo(),
+              ],
             ),
-            Flexible(child: _VideoDetail()),
-          ],
-        ),
-      ],
+          ),
+          Container(
+            height: 60,
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Row(
+              // mainAxisSize: MainAxisSize.max,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: UserImages(
+                    path: 'assets/user/avatar.jpg',
+                  ),
+                ),
+                Expanded(child: _VideoDetail()),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -64,73 +74,31 @@ class _VideoDetail extends HookWidget {
     final video = useProvider(youtubeVideoScopedProvider);
     final time = getContract(startTime: video.createdAt);
 
+    Intl.defaultLocale = 'ja';
+    final numberConverter = NumberFormat.compact();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _Title(
-          title: video.title,
-        ),
-        _Detail(
-          channel: video.userName,
-          time: time,
-          view: video.view,
-        ),
+        Flexible(
+            child: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: _buildTitleBar(video),
+        )),
+        Flexible(child: _buildVideoDetail(video, numberConverter, time)),
       ],
     );
   }
-}
 
-class _Detail extends StatelessWidget {
-  const _Detail({
-    Key? key,
-    required this.channel,
-    required this.view,
-    required this.time,
-  }) : super(key: key);
-  final String channel;
-  final int view;
-  final String time;
-
-  @override
-  Widget build(BuildContext context) {
-    // final datetime = getContract(startTime: time);
-    return DefaultTextStyle(
-      style: TextStyle(fontSize: 12, color: Colors.grey[400]),
-      child: Row(
-        children: [
-          Text(
-            channel,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            '・$view回視聴',
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            '・$time',
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Title extends StatelessWidget {
-  const _Title({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-  final String title;
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildTitleBar(YoutubeVideo video) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 16),
+        Expanded(
+          child: Text(
+            video.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
         MaterialButton(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -148,6 +116,21 @@ class _Title extends StatelessWidget {
           shape: const CircleBorder(),
         ),
       ],
+    );
+  }
+
+  Widget _buildVideoDetail(
+      YoutubeVideo video, NumberFormat numberConverter, String time) {
+    return Text(
+      video.userName + '・ ${numberConverter.format(video.view)}回視聴' + '・ $time',
+      overflow: TextOverflow.ellipsis,
+      maxLines: 2,
+      style: GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontSize: 12,
+          color: Colors.grey[400],
+        ),
+      ),
     );
   }
 }

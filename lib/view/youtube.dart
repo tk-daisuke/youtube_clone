@@ -12,7 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final chipIndexProvider = StateProvider((ref) => 0);
 final filterProvider = StateProvider((ref) => 0);
-final videoIndexScopedProvider = ScopedProvider<int?>(null);
+// final videoIndexScopedProvider = ScopedProvider<int?>(null);
 final youtubeVideoScopedProvider =
     ScopedProvider<YoutubeVideo>((watch) => throw UnimplementedError());
 
@@ -50,18 +50,32 @@ class YoutubeAppbar extends StatelessWidget {
                           .where((element) => element.category == filter.state)
                           .toList()
                       : youtube;
-                  return ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: sotedVideo.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final video = sotedVideo[index];
-                      return ProviderScope(overrides: [
-                        videoIndexScopedProvider.overrideWithValue(index),
-                        youtubeVideoScopedProvider.overrideWithValue(video),
-                      ], child: const YouTubeVideoView());
-                    },
+
+                  return Center(
+                    child: Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.spaceEvenly,
+                      children: sotedVideo
+                          .map((video) => ProviderScope(overrides: [
+                                youtubeVideoScopedProvider
+                                    .overrideWithValue(video),
+                              ], child: const YouTubeVideoView()))
+                          .toList(),
+                    ),
                   );
+                  // return ListView.builder(
+                  //   primary: false,
+                  //   shrinkWrap: true,
+                  //   itemCount: sotedVideo.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     final video = sotedVideo[index];
+                  //     return ProviderScope(overrides: [
+                  //       // videoIndexScopedProvider.overrideWithValue(index),
+                  //       youtubeVideoScopedProvider.overrideWithValue(video),
+                  //     ], child: const YouTubeVideoView());
+                  //   },
+                  // );
                 }),
                 const SizedBox(
                   height: 2000,
