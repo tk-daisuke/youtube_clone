@@ -1,6 +1,8 @@
-# appbar_custom
+# YoutubeClone
 
-A new Flutter project.
+・Viewのみ実装
+・開発中
+・iOSでのみ動作確認
 
 ## Getting Started
 
