@@ -1,5 +1,6 @@
 import 'package:appbar_custom/view/home_screen.dart';
 import 'package:appbar_custom/view/explore_screen.dart';
+import 'package:appbar_custom/view/widget/bottom_sheet_button.dart';
 import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -81,9 +82,28 @@ class BottomNavigationItems extends HookWidget {
         if (selectIndex != 2) {
           _index.state = selectIndex;
         } else if (selectIndex == 2) {
-          final size = MediaQuery.of(context).size;
-
-          videoAddDialog(context, size);
+          final buttons = [
+            bottomSheetButton(Icons.upload, '動画のアップロード'),
+            bottomSheetButton(Icons.live_tv, 'ショート動画を作成'),
+            bottomSheetButton(Icons.settings_input_antenna, 'ライブ配信を開始'),
+          ];
+          showBottomSheetDialog(
+            context,
+            items: buttons,
+            titleBar: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '作成',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          );
         }
       },
     );

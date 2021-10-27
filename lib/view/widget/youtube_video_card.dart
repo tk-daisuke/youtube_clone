@@ -1,7 +1,9 @@
 import 'package:appbar_custom/item/youtube_video.dart';
 import 'package:appbar_custom/localize/ja_timeago.dart';
+import 'package:appbar_custom/view/widget/bottom_sheet_button.dart';
 import 'package:appbar_custom/view/widget/user_images.dart';
 import 'package:appbar_custom/view/home_screen.dart';
+import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,14 +84,14 @@ class _VideoDetail extends HookWidget {
         Flexible(
             child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: _buildTitleBar(video),
+          child: _buildTitleBar(video, context),
         )),
         Flexible(child: _buildVideoDetail(video, numberConverter, time)),
       ],
     );
   }
 
-  Widget _buildTitleBar(YoutubeVideo video) {
+  Widget _buildTitleBar(YoutubeVideo video, BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -105,7 +107,26 @@ class _VideoDetail extends HookWidget {
           height: 17,
           // padding: const EdgeInsets.all(0),
           minWidth: 0,
-          onPressed: () {},
+          onPressed: () {
+            final buttons = [
+              bottomSheetButton(Icons.schedule, '[後で見る]に保存'),
+              bottomSheetButton(Icons.add_to_photos, '再生リストに保存'),
+              bottomSheetButton(Icons.reply, '共有'),
+              bottomSheetButton(Icons.block, '興味なし'),
+              bottomSheetButton(Icons.delete, 'チャンネルをおすすめに表示しない'),
+              bottomSheetButton(Icons.flag, '報告'),
+              const Divider(
+                thickness: 2,
+              ),
+              bottomSheetButton(Icons.close, 'キャンセル',
+                  onPress: () => Navigator.of(context).pop()),
+            ];
+            showBottomSheetDialog(
+              context,
+              titleBar: const SizedBox(),
+              items: buttons,
+            );
+          },
           // color: Colors.blue,
           // textColor: Colors.white,
           child: const Icon(

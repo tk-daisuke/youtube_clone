@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:appbar_custom/item/youtube_video.dart';
+import 'package:appbar_custom/view/widget/bottom_sheet_button.dart';
 import 'package:appbar_custom/view/widget/build_chip_bar.dart';
 import 'package:appbar_custom/view/widget/build_video_list.dart';
 import 'package:appbar_custom/view/widget/user_images.dart';
+import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:appbar_custom/view/widget/youtube_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -20,6 +22,8 @@ class HomeScreen extends StatelessWidget {
   static const String id = 'home_screen';
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
       color: Theme.of(context).bottomAppBarColor,
       child: SafeArea(
@@ -40,10 +44,13 @@ class HomeScreen extends StatelessWidget {
           body: Scaffold(
             // appBar: _buildChipBar(chipTitles),
             body: SingleChildScrollView(
-              child: Column(children: const [
-                BuildVideoList(),
+              child: Column(children: [
                 SizedBox(
-                  height: 2000,
+                  height: size.height / 40,
+                ),
+                const BuildVideoList(),
+                const SizedBox(
+                  height: 200,
                 )
               ]),
             ),
@@ -53,7 +60,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 
 // return ListView.builder(
 //   primary: false,
@@ -80,7 +86,36 @@ class _YoutubeAppbar extends StatelessWidget {
       // pinned: true,
       // expandedHeight: 200,
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.cast)),
+        IconButton(
+          icon: const Icon(Icons.cast),
+          onPressed: () {
+            final buttons = [
+              bottomSheetButton(Icons.airplay, 'AirPlay&Bluetooth devices'),
+              bottomSheetButton(Icons.live_tv, 'テレビコードでリンク'),
+              bottomSheetButton(Icons.settings_input_antenna, '詳細'),
+              const Divider(
+                thickness: 2,
+              ),
+              bottomSheetButton(Icons.close, 'キャンセル',
+                  onPress: () => Navigator.of(context).pop()),
+            ];
+            showBottomSheetDialog(
+              context,
+              titleBar: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'デバイスに接続',
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  ),
+                ],
+              ),
+              items: buttons,
+            );
+          },
+        ),
         IconButton(
           icon: const Icon(Icons.notifications_outlined),
           onPressed: () {},
