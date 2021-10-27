@@ -1,5 +1,6 @@
 import 'package:appbar_custom/item/category_chip.dart';
-import 'package:appbar_custom/view/youtube.dart';
+import 'package:appbar_custom/view/explore_screen.dart';
+import 'package:appbar_custom/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,7 +34,8 @@ Widget buildChipBar() {
               Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(ExploreScreen.id),
                   icon: const Icon(Icons.explore_outlined),
                   label: const Text('探索'),
                   style: ElevatedButton.styleFrom(primary: Colors.white24),

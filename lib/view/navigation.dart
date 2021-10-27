@@ -1,22 +1,24 @@
-import 'package:appbar_custom/view/youtube.dart';
+import 'package:appbar_custom/view/home_screen.dart';
+import 'package:appbar_custom/view/explore_screen.dart';
+import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final bottomIndex = StateProvider<int>((ref) => 0);
 
-class HomeScreen extends HookWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class Navigation extends HookWidget {
+  const Navigation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _index = useProvider(bottomIndex);
     const pageWidgets = [
-      YoutubeAppbar(),
-      YoutubeAppbar(),
-      YoutubeAppbar(),
-      YoutubeAppbar(),
-      YoutubeAppbar(),
+      HomeScreen(),
+      ExploreScreen(),
+      HomeScreen(),
+      HomeScreen(),
+      HomeScreen(),
     ];
     return Scaffold(
       bottomNavigationBar: const BottomNavigationItems(),
@@ -48,9 +50,9 @@ class BottomNavigationItems extends HookWidget {
           label: 'ホーム',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.movie_outlined),
-          activeIcon: Icon(Icons.movie),
-          label: 'ショート',
+          icon: Icon(Icons.explore_outlined),
+          activeIcon: Icon(Icons.explore),
+          label: '探索',
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -78,6 +80,10 @@ class BottomNavigationItems extends HookWidget {
       onTap: (selectIndex) async {
         if (selectIndex != 2) {
           _index.state = selectIndex;
+        } else if (selectIndex == 2) {
+          final size = MediaQuery.of(context).size;
+
+          videoAddDialog(context, size);
         }
       },
     );

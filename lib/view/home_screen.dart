@@ -2,12 +2,11 @@ import 'dart:math';
 
 import 'package:appbar_custom/item/youtube_video.dart';
 import 'package:appbar_custom/view/widget/build_chip_bar.dart';
+import 'package:appbar_custom/view/widget/build_video_list.dart';
 import 'package:appbar_custom/view/widget/user_images.dart';
-import 'package:appbar_custom/view/widget/youtube_video_view.dart';
 import 'package:appbar_custom/view/widget/youtube_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final chipIndexProvider = StateProvider((ref) => 0);
@@ -16,9 +15,9 @@ final filterProvider = StateProvider((ref) => 0);
 final youtubeVideoScopedProvider =
     ScopedProvider<YoutubeVideo>((watch) => throw UnimplementedError());
 
-class YoutubeAppbar extends StatelessWidget {
-  const YoutubeAppbar({Key? key}) : super(key: key);
-
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+  static const String id = 'home_screen';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,43 +40,9 @@ class YoutubeAppbar extends StatelessWidget {
           body: Scaffold(
             // appBar: _buildChipBar(chipTitles),
             body: SingleChildScrollView(
-              child: Column(children: [
-                HookBuilder(builder: (context) {
-                  final youtube = VideoList().videos;
-                  final filter = useProvider(filterProvider);
-                  final sotedVideo = filter.state != 0
-                      ? youtube
-                          .where((element) => element.category == filter.state)
-                          .toList()
-                      : youtube;
-
-                  return Center(
-                    child: Wrap(
-                      spacing: 20,
-                      runSpacing: 20,
-                      alignment: WrapAlignment.spaceEvenly,
-                      children: sotedVideo
-                          .map((video) => ProviderScope(overrides: [
-                                youtubeVideoScopedProvider
-                                    .overrideWithValue(video),
-                              ], child: const YouTubeVideoView()))
-                          .toList(),
-                    ),
-                  );
-                  // return ListView.builder(
-                  //   primary: false,
-                  //   shrinkWrap: true,
-                  //   itemCount: sotedVideo.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     final video = sotedVideo[index];
-                  //     return ProviderScope(overrides: [
-                  //       // videoIndexScopedProvider.overrideWithValue(index),
-                  //       youtubeVideoScopedProvider.overrideWithValue(video),
-                  //     ], child: const YouTubeVideoView());
-                  //   },
-                  // );
-                }),
-                const SizedBox(
+              child: Column(children: const [
+                BuildVideoList(),
+                SizedBox(
                   height: 2000,
                 )
               ]),
@@ -89,6 +54,19 @@ class YoutubeAppbar extends StatelessWidget {
   }
 }
 
+
+// return ListView.builder(
+//   primary: false,
+//   shrinkWrap: true,
+//   itemCount: sotedVideo.length,
+//   itemBuilder: (BuildContext context, int index) {
+//     final video = sotedVideo[index];
+//     return ProviderScope(overrides: [
+//       // videoIndexScopedProvider.overrideWithValue(index),
+//       youtubeVideoScopedProvider.overrideWithValue(video),
+//     ], child: const YouTubeVideoView());
+//   },
+// );
 class _YoutubeAppbar extends StatelessWidget {
   const _YoutubeAppbar({
     Key? key,

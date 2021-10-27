@@ -1,7 +1,7 @@
 import 'package:appbar_custom/item/youtube_video.dart';
 import 'package:appbar_custom/localize/ja_timeago.dart';
 import 'package:appbar_custom/view/widget/user_images.dart';
-import 'package:appbar_custom/view/youtube.dart';
+import 'package:appbar_custom/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,8 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class YouTubeVideoView extends StatelessWidget {
-  const YouTubeVideoView({
+class YoutubeVideoCard extends StatelessWidget {
+  const YoutubeVideoCard({
     Key? key,
   }) : super(key: key);
 

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,12 +20,14 @@ class YoutubeLogo extends StatelessWidget {
             ),
           ],
         ),
-        Text(
-          'YouTube',
-          style: GoogleFonts.roboto(
-            textStyle: const TextStyle(
-                // color: Colors.blue,
-                fontWeight: FontWeight.w900),
+        Flexible(
+          child: Text(
+            'YouTube',
+            style: GoogleFonts.roboto(
+              textStyle: const TextStyle(
+                  // color: Colors.blue,
+                  fontWeight: FontWeight.w900),
+            ),
           ),
         ),
       ],

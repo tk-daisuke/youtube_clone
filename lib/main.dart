@@ -1,4 +1,6 @@
-import 'package:appbar_custom/view/home.dart';
+import 'package:appbar_custom/view/explore_screen.dart';
+import 'package:appbar_custom/view/home_screen.dart';
+import 'package:appbar_custom/view/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,7 +21,11 @@ class MyApp extends StatelessWidget {
         // primarySwatch: Colors.blue,
         backgroundColor: Colors.black,
       ),
-      home: const HomeScreen(),
+      routes: {
+        HomeScreen.id: (context) => const HomeScreen(),
+        ExploreScreen.id: (context) => const ExploreScreen(),
+      },
+      home: const Navigation(),
     );
   }
 }
