@@ -6,6 +6,8 @@ Future<void> showBottomSheetDialog(
   required Widget titleBar,
   required List<Widget> items,
 }) {
+  final ScrollController controller = ScrollController();
+
   final size = MediaQuery.of(context).size;
   return showModalBottomSheet<void>(
       shape: const RoundedRectangleBorder(
@@ -30,7 +32,8 @@ Future<void> showBottomSheetDialog(
                   child: titleBar),
               Expanded(
                 child: SingleChildScrollView(
-                  primary: false,
+                  controller: controller,
+                  key: const Key('device_access'),
                   child: Column(children: items),
                 ),
               ),

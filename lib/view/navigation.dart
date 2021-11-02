@@ -1,5 +1,6 @@
 import 'package:appbar_custom/view/home_screen.dart';
 import 'package:appbar_custom/view/explore_screen.dart';
+import 'package:appbar_custom/view/library_screen.dart';
 import 'package:appbar_custom/view/subscribe_screen.dart';
 import 'package:appbar_custom/view/widget/bottom_sheet_button.dart';
 import 'package:appbar_custom/view/widget/video_add_dialog.dart';
@@ -20,7 +21,7 @@ class Navigation extends HookWidget {
       ExploreScreen(),
       HomeScreen(),
       SubscribeScreen(),
-      HomeScreen(),
+      LibraryScreen(),
     ];
     return Scaffold(
       bottomNavigationBar: const BottomNavigationItems(),
