@@ -40,7 +40,7 @@ void main() {
       // await tester.pump(const Duration(milliseconds: 10));
       await tester.pumpAndSettle(const Duration(seconds: 2));
       await model.tapEvent(tester, find.byIcon(Icons.close));
-      await tester.pumpAndSettle(const Duration(seconds: 2))
+      await tester.pumpAndSettle(const Duration(seconds: 2));
       await model.searchZeroWidget(tester, find.byIcon(Icons.live_tv));
       await multiScreenGolden(tester, 'app_bar', devices: kDevices);
     });
