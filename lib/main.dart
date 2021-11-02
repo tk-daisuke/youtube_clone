@@ -1,7 +1,9 @@
 import 'package:appbar_custom/view/explore_screen.dart';
 import 'package:appbar_custom/view/home_screen.dart';
 import 'package:appbar_custom/view/navigation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {

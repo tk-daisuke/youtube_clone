@@ -1,3 +1,4 @@
+import 'package:appbar_custom/item/youtube_video.dart';
 import 'package:appbar_custom/view/widget/build_video_list.dart';
 import 'package:appbar_custom/view/widget/genre_card.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,12 @@ class ExploreScreen extends StatelessWidget {
       const GenreCard('ゲーム', Icons.sports_esports, Colors.red),
       const GenreCard('ニュース', Icons.feed, Colors.lightBlue),
       const GenreCard('スポーツ', Icons.local_fire_department, Colors.blue),
-    ];
+    ]; 
+    
+    
+    final youtube = VideoList().videos;
+
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +43,7 @@ class ExploreScreen extends StatelessWidget {
           children: [
             _buildGenre(explores, size),
             const Divider(),
-            const BuildVideoList(),
+             BuildVideoList(youtube),
           ],
         ),
       ),

@@ -9,6 +9,7 @@ import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:appbar_custom/view/widget/youtube_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final chipIndexProvider = StateProvider((ref) => 0);
@@ -30,9 +31,9 @@ class HomeScreen extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, value) {
             return [
-              const _YoutubeAppbar(),
+              const YoutubeAppbar(),
               SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
+                delegate: SliverAppBarDelegate(
                   minHeight: 50,
                   maxHeight: 50,
                   child: buildChipBar(),
@@ -48,7 +49,17 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: size.height / 40,
                 ),
-                const BuildVideoList(),
+                HookBuilder(builder: (context) {
+                  final youtube = VideoList().videos;
+                  final filter = useProvider(filterProvider);
+                  final sotedVideo = filter.state != 0
+                      ? youtube
+                          .where((element) => element.category == filter.state)
+                          .toList()
+                      : youtube;
+
+                  return BuildVideoList(sotedVideo);
+                }),
                 const SizedBox(
                   height: 200,
                 )
@@ -73,18 +84,20 @@ class HomeScreen extends StatelessWidget {
 //     ], child: const YouTubeVideoView());
 //   },
 // );
-class _YoutubeAppbar extends StatelessWidget {
-  const _YoutubeAppbar({
+class YoutubeAppbar extends StatelessWidget {
+  const YoutubeAppbar({
+    this.flexibleSpace,
     Key? key,
   }) : super(key: key);
-
+  final Widget? flexibleSpace;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       title: const YoutubeLogo(),
+      expandedHeight: flexibleSpace != null ? 130.0 : 0,
+      flexibleSpace: flexibleSpace,
       // floating: true,
       // pinned: true,
-      // expandedHeight: 200,
       actions: [
         IconButton(
           icon: const Icon(Icons.cast),
@@ -157,12 +170,12 @@ class _YoutubeAppbar extends StatelessWidget {
 // 1
 
 // ???
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
   final Widget child;
 
-  _SliverAppBarDelegate({
+  SliverAppBarDelegate({
     required this.minHeight,
     required this.maxHeight,
     required this.child,
@@ -183,7 +196,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   // 3
   @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+  bool shouldRebuild(SliverAppBarDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
