@@ -5,7 +5,6 @@ import 'package:appbar_custom/view/widget/user_images.dart';
 import 'package:appbar_custom/view/home_screen.dart';
 import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -57,7 +56,7 @@ class YoutubeVideoCard extends StatelessWidget {
   }
 }
 
-class _VideoDetail extends HookWidget {
+class _VideoDetail extends ConsumerWidget {
   const _VideoDetail({
     Key? key,
   }) : super(key: key);
@@ -72,8 +71,8 @@ class _VideoDetail extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final video = useProvider(youtubeVideoScopedProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final video = ref.watch(youtubeVideoScopedProvider);
     final time = getContract(startTime: video.createdAt);
 
     Intl.defaultLocale = 'ja';

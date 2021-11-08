@@ -3,7 +3,6 @@ import 'package:appbar_custom/view/home_screen.dart';
 import 'package:appbar_custom/view/widget/build_chip_bar.dart';
 import 'package:appbar_custom/view/widget/build_video_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final channelFilterProvider = StateProvider((ref) => '');
@@ -17,8 +16,8 @@ class SubscribeScreen extends StatelessWidget {
     final youtube = VideoList().videos.map((e) => e.userName).toList();
 
     final widgelist = youtube.toSet().map((e) {
-      return HookBuilder(builder: (context) {
-        final filter = useProvider(channelFilterProvider);
+      return Consumer(builder: (context, ref, child) {
+        var filter = ref.watch(channelFilterProvider.state);
         final isSelect = filter.state == e;
         final noSelect = filter.state == '';
         return InkWell(
@@ -94,14 +93,17 @@ class SubscribeScreen extends StatelessWidget {
                 SizedBox(
                   height: size.height / 40,
                 ),
-                HookBuilder(builder: (context) {
+                Consumer(builder: (context, ref, child) {
                   final youtube = VideoList().videos;
-                  final filter = useProvider(channelFilterProvider);
-                  final sotedVideo = filter.state != ''
-                      ? youtube
-                          .where((element) => element.userName == filter.state)
-                          .toList()
-                      : youtube;
+                  final filter = ref.watch(channelFilterProvider.state);
+                  final List<YoutubeVideo> sotedVideo;
+                  if (filter.state != '') {
+                    sotedVideo = youtube
+                        .where((element) => element.userName == filter.state)
+                        .toList();
+                  } else {
+                    sotedVideo = youtube;
+                  }
                   return BuildVideoList(sotedVideo);
                 }),
                 const SizedBox(

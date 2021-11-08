@@ -3,13 +3,12 @@ import 'package:appbar_custom/view/explore_screen.dart';
 import 'package:appbar_custom/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Widget buildChipBar() {
-  return HookBuilder(builder: (context) {
-    final chipIndex = useProvider(chipIndexProvider);
-    final filter = useProvider(filterProvider);
+  return Consumer(builder: (context, ref, child) {
+    final chipIndex = ref.watch(chipIndexProvider.state);
+    final filter = ref.watch(filterProvider.state);
     final chips = CategoryChipList().chips;
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: 1),
@@ -70,6 +69,7 @@ Widget buildChipBar() {
                       ),
                       onSelected: (selected) {
                         if (selected) {
+                          filter.state;
                           chipIndex.state = index;
                           filter.state = chips[index].category;
                           HapticFeedback.lightImpact();

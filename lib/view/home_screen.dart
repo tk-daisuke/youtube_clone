@@ -9,14 +9,13 @@ import 'package:appbar_custom/view/widget/video_add_dialog.dart';
 import 'package:appbar_custom/view/widget/youtube_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final chipIndexProvider = StateProvider((ref) => 0);
 final filterProvider = StateProvider((ref) => 0);
 // final videoIndexScopedProvider = ScopedProvider<int?>(null);
 final youtubeVideoScopedProvider =
-    ScopedProvider<YoutubeVideo>((watch) => throw UnimplementedError());
+    Provider<YoutubeVideo>((watch) => throw UnimplementedError());
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -49,9 +48,9 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: size.height / 40,
                 ),
-                HookBuilder(builder: (context) {
+                Consumer(builder: (context, ref, child) {
                   final youtube = VideoList().videos;
-                  final filter = useProvider(filterProvider);
+                  final filter = ref.watch(filterProvider.state);
                   final sotedVideo = filter.state != 0
                       ? youtube
                           .where((element) => element.category == filter.state)
